@@ -19,6 +19,7 @@ export class ApiError extends Error {
   constructor(
     public status: number,
     message: string,
+    public details?: unknown,
   ) {
     super(message);
     this.name = "ApiError";
@@ -41,7 +42,13 @@ export async function apiFetch<T>(
   });
   if (!res.ok) {
     const text = await res.text().catch(() => "");
-    throw new ApiError(res.status, text || res.statusText);
+    try {
+      const payload = JSON.parse(text) as { error?: string; message?: string; details?: unknown };
+      throw new ApiError(res.status, payload.error || payload.message || res.statusText, payload.details);
+    } catch (error) {
+      if (error instanceof ApiError) throw error;
+      throw new ApiError(res.status, text || res.statusText);
+    }
   }
   return (await res.json()) as T;
 }

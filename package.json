@@ -1,7 +1,7 @@
 {
   "name": "@workspace/website",
   "version": "1.1.0",
-  "description": "PrediQs AI \u2014 Next.js marketing site + web app.",
+  "description": "PrediQs AI — Next.js marketing site + web app.",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,6 +11,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.116.0",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
     "framer-motion": "^12.23.24",

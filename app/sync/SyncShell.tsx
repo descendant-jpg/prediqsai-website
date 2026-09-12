@@ -11,6 +11,8 @@ const links = [
   { href: "/sync", label: "Overview", icon: Home },
   { href: "/sync/articles", label: "Articles", icon: FileText },
   { href: "/sync/articles/new", label: "Add new post", icon: Plus, child: true },
+  { href: "/sync/media", label: "Media library", icon: FileText, child: true },
+  { href: "/sync/categories", label: "Categories", icon: FileText, child: true },
   { href: "/sync/seo", label: "SEO Suite", icon: Globe2 },
   { href: "/sync/settings", label: "Settings", icon: Settings },
 ];
