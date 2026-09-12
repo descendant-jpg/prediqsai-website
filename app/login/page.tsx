@@ -35,7 +35,7 @@ export default function LoginPage() {
     setSubmitting(true);
     try {
       const user = await login(email.trim(), password);
-      router.push(user.isAdmin ? "/admin/blog" : "/");
+      router.push(user.isAdmin ? "/sync" : "/");
     } catch (err) {
       setError(errorMessage(err));
       setSubmitting(false);

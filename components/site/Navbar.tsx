@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Globe, Menu, X, Zap } from "lucide-react";
+import { ChevronDown, Globe, LayoutDashboard, LogOut, Menu, ShieldCheck, X, Zap } from "lucide-react";
 import { useAuth } from "@/lib/auth";
 import { cn } from "@/lib/utils";
 
@@ -76,6 +76,39 @@ function LanguageMenu() {
   );
 }
 
+function UserMenu() {
+  const { user, logout } = useAuth();
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+
+  useEffect(() => {
+    const close = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) setOpen(false);
+    };
+    const escape = (event: KeyboardEvent) => event.key === "Escape" && setOpen(false);
+    document.addEventListener("mousedown", close);
+    document.addEventListener("keydown", escape);
+    return () => { document.removeEventListener("mousedown", close); document.removeEventListener("keydown", escape); };
+  }, []);
+  if (!user) return null;
+  const tier = user.subscriptionTier || user.tier || "Free";
+  const name = user.displayName || user.username || user.email.split("@")[0];
+  return (
+    <div ref={ref} className="relative">
+      <button type="button" onClick={() => setOpen((value) => !value)} aria-haspopup="menu" aria-expanded={open} className="flex items-center gap-2 rounded-full border border-edge bg-panel px-3 py-1.5 text-sm text-ice transition hover:border-volt/50">
+        <span className="flex h-6 w-6 items-center justify-center rounded-full bg-volt/15 font-mono text-xs font-bold text-volt">{name.slice(0, 1).toUpperCase()}</span>
+        <span className="hidden max-w-28 truncate sm:block">{name}</span><ChevronDown className="hidden h-3.5 w-3.5 text-muted sm:block" />
+      </button>
+      {open && <div role="menu" className="absolute right-0 top-11 z-50 w-72 overflow-hidden rounded-xl border border-edge bg-panel shadow-2xl">
+        <div className="border-b border-edge px-4 py-3.5"><p className="truncate font-semibold text-ice">{name}</p><p className="mt-0.5 truncate text-xs text-muted">{user.email}</p><span className="mt-3 inline-flex rounded-full border border-volt/25 bg-volt/10 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-wider text-volt">{tier}</span></div>
+        {user.isAdmin && <Link role="menuitem" href="/sync" onClick={() => setOpen(false)} className="flex items-center gap-3 px-4 py-3 text-sm font-medium text-ice transition hover:bg-panel-2"><LayoutDashboard className="h-4 w-4 text-volt" /> Admin dashboard</Link>}
+        <button role="menuitem" type="button" onClick={() => { logout(); setOpen(false); window.location.assign("/"); }} className="flex w-full items-center gap-3 border-t border-edge px-4 py-3 text-left text-sm font-semibold text-danger transition hover:bg-danger/10"><LogOut className="h-4 w-4" /> Sign out</button>
+      </div>}
+    </div>
+  );
+}
+
 export default function Navbar() {
   const { user, loading } = useAuth();
   const [mobileOpen, setMobileOpen] = useState(false);
@@ -84,6 +117,7 @@ export default function Navbar() {
   useEffect(() => {
     setMobileOpen(false);
   }, [pathname]);
+  if (pathname.startsWith("/sync")) return null;
 
   return (
     <header className="sticky top-0 z-40 border-b border-edge/70 bg-night/85 backdrop-blur-md">
@@ -113,12 +147,7 @@ export default function Navbar() {
         <div className="flex items-center gap-3">
           <LanguageMenu />
           {!loading && user ? (
-            <Link
-              href={user.isAdmin ? "/admin/blog" : "/results"}
-              className="hidden rounded-full border border-edge px-4 py-2 text-sm text-ice transition hover:border-volt/40 sm:block"
-            >
-              {user.displayName || user.email}
-            </Link>
+            <UserMenu />
           ) : (
             <Link
               href="/login"
@@ -127,12 +156,7 @@ export default function Navbar() {
               Sign In
             </Link>
           )}
-          <Link
-            href="/register"
-            className="rounded-full bg-volt px-4 py-2 text-sm font-semibold text-night transition hover:bg-volt-deep"
-          >
-            Get Started
-          </Link>
+          {!user && <Link href="/register" className="rounded-full bg-volt px-4 py-2 text-sm font-semibold text-night transition hover:bg-volt-deep">Get Started</Link>}
           <button
             type="button"
             aria-label="Menu"
@@ -164,6 +188,7 @@ export default function Navbar() {
                 Sign In
               </Link>
             ) : null}
+            {user?.isAdmin ? <Link href="/sync" className="rounded-lg px-3 py-2.5 text-sm text-volt transition hover:bg-panel">Admin dashboard</Link> : null}
           </div>
         </div>
       ) : null}

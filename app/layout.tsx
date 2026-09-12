@@ -3,8 +3,7 @@ import { Inter, Space_Grotesk, IBM_Plex_Mono } from "next/font/google";
 import Script from "next/script";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth";
-import Navbar from "@/components/site/Navbar";
-import Footer from "@/components/site/Footer";
+import SiteChrome from "@/components/site/SiteChrome";
 
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const grotesk = Space_Grotesk({ subsets: ["latin"], variable: "--font-space-grotesk" });
@@ -65,9 +64,7 @@ gtag('config', '${gaId}');`}
           </>
         ) : null}
         <AuthProvider>
-          <Navbar />
-          <main>{children}</main>
-          <Footer />
+          <SiteChrome>{children}</SiteChrome>
         </AuthProvider>
       </body>
     </html>
