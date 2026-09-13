@@ -46,12 +46,11 @@ export default async function Hero() {
           AI-powered football intelligence
         </div>
         <h1 className="max-w-5xl font-display text-5xl font-bold leading-[0.98] tracking-[-0.045em] text-ice sm:text-6xl lg:text-8xl">
-          Stop Guessing. Use{" "}
-          <span className="text-volt">AI Data</span> for Wins.
+          Outsmart the Bookies with <span className="text-volt">Predictive AI.</span>
         </h1>
         <p className="mt-7 max-w-2xl text-base leading-7 text-muted sm:text-xl sm:leading-8">
-          Our AI analyzes team form, head-to-head records, and live odds movement
-          to surface smarter, data-backed picks.
+          Turn complex match data into profitable decisions with our multi-model
+          sports intelligence engine.
         </p>
         <div className="mt-9 flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
           <Link

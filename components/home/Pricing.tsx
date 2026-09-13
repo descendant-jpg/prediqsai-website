@@ -25,7 +25,7 @@ export default function Pricing() {
           <article className="card-glow relative flex flex-col rounded-2xl border border-volt/30 bg-panel p-7 sm:p-8">
             <span className="absolute right-6 top-6 rounded-full bg-volt px-3 py-1 font-mono text-[10px] font-semibold uppercase text-night">Best value</span>
             <p className="font-mono text-xs uppercase tracking-widest text-volt">Premium</p>
-            <div className="mt-5 flex items-end gap-2"><span className="font-display text-4xl font-bold">$9.99</span><span className="pb-1 text-sm text-muted">/ month</span></div>
+            <div className="mt-5 flex items-end gap-2"><span className="font-display text-4xl font-bold">$19.99</span><span className="pb-1 text-sm text-muted">/ month</span></div>
             <p className="mt-2 text-sm text-muted">The full toolkit for serious analysis.</p>
             <FeatureList items={premium} />
             <Link href="/register" className="mt-8 inline-flex items-center justify-center gap-2 rounded-lg bg-volt px-5 py-3 text-sm font-semibold text-night transition hover:bg-volt/90">Unlock Premium <ArrowRight className="h-4 w-4" /></Link>

@@ -35,7 +35,9 @@ export default function LoginPage() {
     setSubmitting(true);
     try {
       const user = await login(email.trim(), password);
-      router.push(user.isAdmin ? "/sync" : "/");
+      const next = new URLSearchParams(window.location.search).get("next");
+      const safeNext = next?.startsWith("/") && !next.startsWith("//") ? next : null;
+      router.push(user.isAdmin ? "/sync" : safeNext || "/");
     } catch (err) {
       setError(errorMessage(err));
       setSubmitting(false);

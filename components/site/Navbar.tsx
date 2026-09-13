@@ -41,6 +41,48 @@ function LanguageMenu() {
     return () => document.removeEventListener("mousedown", onClick);
   }, []);
 
+  useEffect(() => {
+    const callbackName = "prediqsGoogleTranslateInit";
+    type GoogleTranslateWindow = Window & typeof globalThis & {
+      google?: {
+        translate?: {
+          TranslateElement: new (
+            options: { pageLanguage: string; includedLanguages: string; autoDisplay: boolean },
+            elementId: string,
+          ) => unknown;
+        };
+      };
+      prediqsGoogleTranslateInit?: () => void;
+    };
+    const hostWindow = window as GoogleTranslateWindow;
+    hostWindow.prediqsGoogleTranslateInit = () => {
+      if (hostWindow.google?.translate?.TranslateElement) {
+        new hostWindow.google.translate.TranslateElement(
+          { pageLanguage: "en", includedLanguages: "es,fr,pt,de,sw,ar", autoDisplay: false },
+          "google_translate_element",
+        );
+      }
+    };
+    if (!document.getElementById("prediqs-google-translate-script")) {
+      const script = document.createElement("script");
+      script.id = "prediqs-google-translate-script";
+      script.src = `https://translate.google.com/translate_a/element.js?cb=${callbackName}`;
+      script.async = true;
+      document.body.appendChild(script);
+    }
+  }, []);
+
+  const translate = (code: string) => {
+    setLang(code);
+    localStorage.setItem("prediqs_lang", code);
+    const select = document.querySelector<HTMLSelectElement>(".goog-te-combo");
+    if (select) {
+      select.value = code === "en" ? "" : code;
+      select.dispatchEvent(new Event("change"));
+    }
+    setOpen(false);
+  };
+
   return (
     <div ref={ref} className="relative">
       <button
@@ -53,15 +95,13 @@ function LanguageMenu() {
       </button>
       {open ? (
         <div className="absolute right-0 top-11 z-50 w-40 overflow-hidden rounded-xl border border-edge bg-panel shadow-2xl">
+          <div id="google_translate_element" className="sr-only" aria-hidden="true" />
+          <p className="border-b border-edge px-4 py-2 font-mono text-[9px] uppercase tracking-[0.16em] text-muted">Translate page</p>
           {LANGUAGES.map((l) => (
             <button
               key={l.code}
               type="button"
-              onClick={() => {
-                setLang(l.code);
-                localStorage.setItem("prediqs_lang", l.code);
-                setOpen(false);
-              }}
+              onClick={() => translate(l.code)}
               className={cn(
                 "block w-full px-4 py-2 text-left text-sm transition hover:bg-panel-2",
                 lang === l.code ? "text-volt" : "text-ice",
