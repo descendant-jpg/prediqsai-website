@@ -6,7 +6,6 @@ export async function GET() {
     const data = await res.json();
     const posts = Array.isArray(data) ? data : [];
 
-    // Hardcode the www domain to prevent canonical mismatch
     const xml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
@@ -23,14 +22,12 @@ export async function GET() {
   </url>`).join('')}
 </urlset>`;
 
-    // Explicitly return the correct MIME type header required by Google
     return new NextResponse(xml.trim(), {
       headers: {
         'Content-Type': 'application/xml; charset=UTF-8',
       },
     });
   } catch (error) {
-    // Safe fallback if the fetch fails during Vercel's prerender
     const fallbackXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
