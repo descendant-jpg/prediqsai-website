@@ -1,7 +1,7 @@
 import type { MetadataRoute } from "next";
 import { apiFetch } from "@/lib/api";
 
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://prediqsai.com").replace(/\/$/, "");
+const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://www.prediqsai.com").replace(/\/$/, "");
 type PublishedPost = { slug: string; publishedAt: string | null; updatedAt?: string | null };
 type BlogPage = { posts: PublishedPost[]; total: number };
 
