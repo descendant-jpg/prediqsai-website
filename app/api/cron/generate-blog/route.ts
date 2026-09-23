@@ -13,7 +13,7 @@ type QueueItem = { id: string; topic: string; claimToken: string };
 type GeneratedArticle = { title: string; content: string; excerpt?: string };
 
 function authorized(request: Request): boolean {
-  const secret = process.env.WEBSITE_CRON_SECRET;
+  const secret = process.env.CRON_SECRET;
   return Boolean(secret && request.headers.get("authorization") === `Bearer ${secret}`);
 }
 
@@ -44,7 +44,7 @@ async function internalFetch<T>(path: string, init?: RequestInit): Promise<T> {
   const response = await fetch(`${apiOrigin}/api${path}`, {
     ...init,
     headers: {
-      Authorization: `Bearer ${process.env.WEBSITE_CRON_SECRET}`,
+      Authorization: `Bearer ${process.env.CRON_SECRET}`,
       "Content-Type": "application/json",
       ...(init?.headers ?? {}),
     },
