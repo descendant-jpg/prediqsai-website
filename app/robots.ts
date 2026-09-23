@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: '/',
       disallow: ['/api/', '/admin/'],
     },
-    sitemap: 'https://www.prediqsai.com/sitemap-main.xml',
+    sitemap: 'https://www.prediqsai.com/sitemap.xml',
   };
 }
