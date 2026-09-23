@@ -30,7 +30,7 @@ function articleSchema(value: unknown): value is GeneratedArticle {
 }
 
 function parseArticle(text: string): GeneratedArticle {
-  const json = text.trim().replace(/^```json\s*/i, "").replace(/\s*```$/, "");
+  const match = text.match(/\{[\s\S]*\}/); const json = match ? match[0] : "{}";
   const parsed: unknown = JSON.parse(json);
   if (!articleSchema(parsed)) throw new Error("Gemini returned an invalid article payload.");
   return {
