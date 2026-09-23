@@ -75,7 +75,7 @@ export async function GET(request: Request) {
 
     const gemini = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
     const model = gemini.getGenerativeModel({
-      model: "gemini-1.5-pro-latest",
+      model: "gemini-1.5-pro",
       generationConfig: { responseMimeType: "application/json", temperature: 0.7, maxOutputTokens: 8192 },
     });
     const prompt = `You are an expert sports handicapper and tactical analyst writing for PrediQs AI.
