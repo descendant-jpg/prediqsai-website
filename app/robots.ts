@@ -1,10 +1,12 @@
-import type { MetadataRoute } from "next";
-
-const siteUrl = (process.env.NEXT_PUBLIC_SITE_URL ?? "https://prediqsai.com").replace(/\/$/, "");
+import { MetadataRoute } from 'next';
 
 export default function robots(): MetadataRoute.Robots {
   return {
-    rules: { userAgent: "*", allow: "/" },
-    sitemap: `${siteUrl}/sitemap.xml`,
+    rules: {
+      userAgent: '*',
+      allow: '/',
+      disallow: ['/api/', '/admin/'],
+    },
+    sitemap: 'https://www.prediqsai.com/sitemap.xml',
   };
 }
